@@ -14,6 +14,7 @@ class ToDoTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.tableFooterView = UIView()
         
         if let savedToDos = ToDo.loadToDos() {
             todos = savedToDos
@@ -58,6 +59,7 @@ class ToDoTableViewController: UITableViewController {
         if editingStyle == .delete {
             todos.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
+            ToDo.saveToDos(todos)
         }
 //        else if editingStyle == .insert {
 //            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
@@ -79,18 +81,35 @@ class ToDoTableViewController: UITableViewController {
     }
     */
 
-    /*
+    
     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        if segue.identifier == "editToDo" {
+            let selectedToDo = todos[(tableView.indexPathForSelectedRow?.row)!]
+            
+            let destinationNC = segue.destination as! UINavigationController
+            let destinationVC = destinationNC.topViewController as!  ToDOViewController
+            destinationVC.todo = selectedToDo
+            
+        }
     }
-    */
+    
     
     @IBAction func unwindToToDoList(segue: UIStoryboardSegue) {
+        guard segue.identifier == "saveUnwind" else { return }
         
+        let sourceVC = segue.source as! ToDOViewController
+        let newToDo = sourceVC.todo!
+        
+        if let selectedRow = tableView.indexPathForSelectedRow {
+            todos[selectedRow.row] = newToDo
+            tableView.reloadRows(at: [selectedRow], with: .automatic)
+        } else {
+            todos.append(newToDo)
+            tableView.insertRows(at: [IndexPath(row: todos.count-1, section: 0)], with: .automatic)
+        }
+        ToDo.saveToDos(todos)
     }
 
 }

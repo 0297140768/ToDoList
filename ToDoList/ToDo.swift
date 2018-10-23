@@ -8,15 +8,32 @@
 
 import Foundation
 
-struct ToDo {
+struct ToDo: Codable {
     var title: String
     var isComplete: Bool
     var dueDate: Date
     var notes: String?
     
     static func loadToDos() -> [ToDo]? {
-        return nil
+        let propertyListDecoder = PropertyListDecoder()
+        if let data = try? Data(contentsOf: fileURL),
+            let decodedToDos = try? propertyListDecoder.decode([ToDo].self, from: data) {
+            return decodedToDos
+        } else {
+            return nil
+        }
     }
+    
+    static func saveToDos(_ todos: [ToDo]) {
+        let propertyListEncoder = PropertyListEncoder()
+        let encodedNotes = try? propertyListEncoder.encode(todos)
+        
+        // Запись заметки в файл
+        try? encodedNotes?.write(to: fileURL, options: .noFileProtection)
+    }
+    
+    static var documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+    static var fileURL = documentsDirectory.appendingPathComponent("todoList").appendingPathExtension("plist")
     
     static func loadSampleToDos() -> [ToDo] {
         return [
