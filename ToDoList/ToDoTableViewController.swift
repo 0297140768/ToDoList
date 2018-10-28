@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol ToDoCellDelegate {
+    func toggleComplite(for indexPath: IndexPath)
+}
+
 class ToDoTableViewController: UITableViewController {
     
     var todos = [ToDo]()
@@ -39,12 +43,16 @@ class ToDoTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "ToDoCellIdentifier") else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "ToDoCellIdentifier") as? ToDoTableViewCell else {
             fatalError("\(#function) at \(#line): dequeueReusableCell(withIdentifier:) error")
         }
         
         let todo = todos[indexPath.row]
-        cell.textLabel?.text = todo.title
+        cell.name.text = todo.title
+        cell.compliteButton.isSelected = todo.isComplete
+        cell.delegate = self
+        cell.indexPath = indexPath
+        
         
         return cell
     }
@@ -112,4 +120,14 @@ class ToDoTableViewController: UITableViewController {
         ToDo.saveToDos(todos)
     }
 
+}
+
+extension ToDoTableViewController: ToDoCellDelegate {
+    func toggleComplite(for indexPath: IndexPath) {
+        todos[indexPath.row].isComplete = !self.todos[indexPath.row].isComplete
+        ToDo.saveToDos(todos)
+        tableView.reloadRows(at: [indexPath], with: .automatic)
+    }
+    
+    
 }

@@ -17,14 +17,43 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="ToDoCellIdentifier" id="5TK-1b-bDP">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="ToDoCellIdentifier" id="5TK-1b-bDP" customClass="ToDoTableViewCell" customModule="ToDoList" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="5TK-1b-bDP" id="Oaz-CT-pVG">
                                     <rect key="frame" x="0.0" y="0.0" width="286" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p8W-oH-L5e">
+                                            <rect key="frame" x="16" y="4" width="36" height="36"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="36" id="Gke-AT-Ppc"/>
+                                                <constraint firstAttribute="height" constant="36" id="wMO-9h-wbB"/>
+                                            </constraints>
+                                            <state key="normal" image="Unchecked"/>
+                                            <state key="selected" image="Checked"/>
+                                            <connections>
+                                                <action selector="toggleIsCompliteToDo:" destination="5TK-1b-bDP" eventType="touchUpInside" id="oQF-Ba-nMn"/>
+                                            </connections>
+                                        </button>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bNo-mn-yvn">
+                                            <rect key="frame" x="60" y="11.5" width="218" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="p8W-oH-L5e" firstAttribute="leading" secondItem="Oaz-CT-pVG" secondAttribute="leadingMargin" id="Byq-Fs-eGL"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="bNo-mn-yvn" secondAttribute="trailing" id="DhI-8c-hCW"/>
+                                        <constraint firstItem="bNo-mn-yvn" firstAttribute="centerY" secondItem="Oaz-CT-pVG" secondAttribute="centerY" id="Psf-Ro-GQu"/>
+                                        <constraint firstItem="bNo-mn-yvn" firstAttribute="leading" secondItem="p8W-oH-L5e" secondAttribute="trailing" constant="8" id="qJ4-iG-uNC"/>
+                                        <constraint firstItem="p8W-oH-L5e" firstAttribute="centerY" secondItem="Oaz-CT-pVG" secondAttribute="centerY" id="r4C-Gg-s23"/>
+                                    </constraints>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="compliteButton" destination="p8W-oH-L5e" id="pZZ-lL-M5u"/>
+                                    <outlet property="name" destination="bNo-mn-yvn" id="e7s-V4-Y91"/>
                                     <segue destination="gUF-RM-Gte" kind="show" identifier="editToDo" id="k7N-FU-u9k"/>
                                 </connections>
                             </tableViewCell>
